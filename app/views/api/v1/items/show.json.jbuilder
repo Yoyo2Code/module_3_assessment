@@ -1,1 +1,1 @@
-json.extract! @order, :id, :name, :description, :image_url
+json.extract! @item, :id, :name, :description, :image_url

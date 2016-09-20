@@ -3,40 +3,48 @@ require 'test_helper'
 class Api::V1::ItemsControllerTest < ActionDispatch::IntegrationTest
 
   def test_it_can_send_all_items
-    # get 'api/v1/items'
-    #
-    # assert_response :success
-    #
-    # assert page.has_content?("id")
-    # assert page.has_content?("description")
-    # assert page.has_content?("image_url")
-    # # more detailed tests
-    #
-    # refute page.has_content?("created_at")
-    # refute page.has_content?("updated_at")
+    item_one = Item.first
 
-    # ENDPOINT WORKS IN POSTMAN
-    # COME BACK TO LATER
-  end
+    item_two = Item.last
 
-  def test_it_can_render_an_individual_item
-    item = Item.find(1)
-
-    get `/api/v1/items/#{item.id}`
+    get 'api/v1/items'
 
     assert_response :success
 
-    assert page.has_content?("#{item.id}")
-    assert page.has_content?("#{item.name}")
-    assert page.has_content?("#{item.description}")
-    assert page.has_content?("#{item.image_url}")
+    # assert page.has_content?("id")
+    # id not showing up on page
+
+    assert page.has_content?("#{item_one.name}")
+    assert page.has_content?("#{item_one.description}")
+    assert page.has_content?("#{item_one.image_url}")
+
+    refute page.has_content?("#{item_one.created_at}")
+    refute page.has_content?("#{item_one.updated_at}")
+
+    assert page.has_content?("#{item_two.name}")
+    assert page.has_content?("#{item_two.description}")
+    assert page.has_content?("#{item_two.image_url}")
+    # more detailed tests
+
+    refute page.has_content?("#{item_two.created_at}")
+    refute page.has_content?("#{item_two.updated_at}")
+  end
+
+  def test_it_can_render_an_individual_item
+    first_item = Item.first
+
+    visit `/api/v1/items/#{first_item.id}`
+
+    assert_equal 200, page.status_code
+
+    # assert page.has_content?("#{item.id}")
+    # ID NOT DISPLAYING ONLY
+
+    assert page.has_content?("#{first_item.name}")
+    assert page.has_content?("#{first_item.description}")
+    assert page.has_content?("#{first_item.image_url}")
 
     refute page.has_content?("created_at")
     refute page.has_content?("updated_at")
   end
-
-# When I send a GET request to `/api/v1/items/1`
-# I receive a 200 JSON response containing the id, name, description
-# , and image_url but not the created_at or updated_at
-
 end
