@@ -47,4 +47,14 @@ class Api::V1::ItemsControllerTest < ActionDispatch::IntegrationTest
     refute page.has_content?("created_at")
     refute page.has_content?("updated_at")
   end
+
+  # def test_it_can_delete_items
+  #   item = Item.first
+  #
+  #   delete "api/v1/items/#{item.id}"
+  #
+  #   assert_equal 204, page.status_code
+  #
+  #   refute Item.find(item.id)
+  # end
 end

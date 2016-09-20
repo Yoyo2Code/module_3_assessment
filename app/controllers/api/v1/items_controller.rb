@@ -6,4 +6,9 @@ class Api::V1::ItemsController < ApplicationController
   def show
     @item = Item.find(params[:id])
   end
+
+  # def destroy
+  #   Item.delete(params[:id])
+  #   # render json: status: :no_content
+  # end
 end
