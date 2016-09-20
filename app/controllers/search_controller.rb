@@ -2,7 +2,7 @@ class SearchController < ApplicationController
   def index
     response = Faraday.get("https://api.bestbuy.com/v1/stores((area(80202,25)))?apiKey=#{ENV["API_KEY"]}&pageSize=20&format=json")
     data = JSON.parse(response.body)["stores"]
-    @stores = data.map do |store|
+    stores = data.map do |store|
        store_data = { long_name: store["longName"],
                       city: store["city"],
                       distance: store["distance"],
@@ -11,6 +11,9 @@ class SearchController < ApplicationController
 
       OpenStruct.new(store_data)
     end
+    @store_count = @stores.count
+    @stores = stores[0..14]
+    require 'pry'; binding.pry
     # stores have 17 results
   end
 end

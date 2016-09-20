@@ -12,18 +12,25 @@ class UserCanSearchForStoreTest < Capybara::Rails::TestCase
     assert_equal "/search", current_path
 
     assert page.has_content?("17 Total Stores")
-    assert page.has_selector('input', count: 15)
+
+    # page.all("ol li").count.should eql(2)
+
+    assert page.all("table tr.store-details", count: 15)
+
+    within("table") do
+      assert page.has_css?('tr.store-details', count: 15)
+    end
 
     # expect(page).to have_selector('input', count: 12)
 
-    assert page.has_content?("long name")
-    assert page.has_content?("city")
-    assert page.has_content?("distance")
-    assert page.has_content?("phone number")
-    assert page.has_content?("store type")
-
+    within("table") do
+      assert page.has_content?("Long Name")
+      assert page.has_content?("city")
+      assert page.has_content?("distance")
+      assert page.has_content?("phone number")
+      assert page.has_content?("store type")
+    end
     # expand tests to be more detailed
-
 
   end
 end
