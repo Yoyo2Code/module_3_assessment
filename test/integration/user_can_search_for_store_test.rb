@@ -6,38 +6,30 @@ class UserCanSearchForStoreTest < Capybara::Rails::TestCase
     visit root_path
 
     fill_in "query", with: 80202
-
     click_on "Locate"
 
     assert_equal "/search", current_path
 
     assert page.has_content?("17 Total Stores")
 
-    # page.all("ol li").count.should eql(2)
-
-    assert page.all("table tr.store-details", count: 15)
-
     within("table") do
       assert page.has_css?('tr.store-details', count: 15)
     end
 
-    # expect(page).to have_selector('input', count: 12)
-
     within("table") do
       assert page.has_content?("Long Name")
-      assert page.has_content?("city")
-      assert page.has_content?("distance")
-      assert page.has_content?("phone number")
-      assert page.has_content?("store type")
-    end
-    # expand tests to be more detailed
+      assert page.has_content?("City")
+      assert page.has_content?("Distance")
+      assert page.has_content?("Phone Number")
+      assert page.has_content?("Store Type")
 
+      assert page.has_content?("Cherry Creek Shopping Center")
+      assert page.has_content?("Denver")
+      assert page.has_content?("3.25")
+      assert page.has_content?("303-270-9189")
+      assert page.has_content?("Mobile")
+
+      refute page.has_content?(25.0)
+    end
   end
 end
-
-
-# As a user
-# When I visit "/"
-# And I fill in a search box with "80202" and click "search"
-# Then my current path should be "/search" (ignoring params)
-# And I should see stores within 25 miles of 80202

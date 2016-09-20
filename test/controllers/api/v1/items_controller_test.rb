@@ -12,7 +12,6 @@ class Api::V1::ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     # assert page.has_content?("id")
-    # id not showing up on page
 
     assert page.has_content?("#{item_one.name}")
     assert page.has_content?("#{item_one.description}")
@@ -37,7 +36,6 @@ class Api::V1::ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 200, page.status_code
 
     # assert page.has_content?("#{item.id}")
-    # ID NOT DISPLAYING ONLY
 
     assert page.has_content?("#{first_item.name}")
     assert page.has_content?("#{first_item.description}")
@@ -47,34 +45,36 @@ class Api::V1::ItemsControllerTest < ActionDispatch::IntegrationTest
     refute page.has_content?("updated_at")
   end
 
-  # def test_it_can_delete_items
-  #   item = Item.first
-  #
-  #   delete "api/v1/items/#{item.id}"
-  #
-  #   assert_equal 204, page.status_code
-  #
-  #   refute Item.find(item.id)
-  # end
+  def test_it_can_delete_items
+    item = Item.first
 
-  # def test_can_create_a_new_item
-  #   item_params = { name: "Bobby",
-  #                   description: "something interesting",
-  #                   image_url: "google.com" }
-  #
-  #   post "/api/v1/items", params: {item: item_params}
-  #
-  #   # NOT PASSING IN PARAMS, BUT WORKING IN POSTMAN
-  #
-  #   assert_equal 201, page.status_code
-  #
-  #   assert page.has_content?("#{item_params["name"]}")
-  #   assert page.has_content?("#{item_params["description"]}")
-  #   assert page.has_content?("#{item_params["image_url"]}")
-  #
-  #   item = Item.find_by(name: item_params["name"])
-  #
-  #   refute page.has_content?("#{item.created_at}")
-  #   refute page.has_content?("#{item.updated_at}")
-  # end
+    delete "api/v1/items/#{item.id}"
+
+    assert_equal 204, page.status_code
+
+    refute Item.find(item.id)
+
+    #requests a template
+  end
+
+  def test_can_create_a_new_item
+    item_params = { name: "Bobby",
+                    description: "something interesting",
+                    image_url: "google.com" }
+
+    post "/api/v1/items", params: {item: item_params}
+
+    # NOT PASSING IN PARAMS IN TEST, BUT WORKING IN POSTMAN
+
+    assert_equal 201, page.status_code
+
+    assert page.has_content?("#{item_params["name"]}")
+    assert page.has_content?("#{item_params["description"]}")
+    assert page.has_content?("#{item_params["image_url"]}")
+
+    item = Item.find_by(name: item_params["name"])
+
+    refute page.has_content?("#{item.created_at}")
+    refute page.has_content?("#{item.updated_at}")
+  end
 end
