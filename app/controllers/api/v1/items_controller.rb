@@ -18,7 +18,6 @@ class Api::V1::ItemsController < ApplicationController
   private
 
   def item_params
-    require 'pry'; binding.pry
     params.require(:item).permit(:name, :description, :image_url)
   end
 end
